@@ -13,7 +13,7 @@ def buscar_dados(ticker, periodo):
 
     return dados
 
-ticker = "VALE3.SA"
+ticker = "PETR4.SA"
 
 dados = buscar_dados(ticker, "1y")
 
@@ -23,10 +23,14 @@ else:
     print(f"Dados encontrados para {ticker}:")
     print(dados.head())
 
+    primeiro_fechamento = dados["Close"].iloc[0].iloc[0]
     ultimo_fechamento = dados["Close"].iloc[-1].iloc[0]
+    retorno = ((ultimo_fechamento - primeiro_fechamento) / primeiro_fechamento)  * 100
 
-    print(f"\nÚltimo fechamento: R$ {ultimo_fechamento:.2f}")
-    print(f"\nTotal de registros: {len(dados)}")
+    print(f"\nPrimeiro fechamento: R$ {primeiro_fechamento:.2f}")
+    print(f"Último fechamento: R$ {ultimo_fechamento:.2f}")
+    print(f"Retorno no peródo: {retorno:.2f}%")
+    print(f"Total de registros: {len(dados)}")
 
 
 
