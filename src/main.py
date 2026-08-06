@@ -31,6 +31,12 @@ def calcular_estatisticas(dados):
 
     return media_retorno_diario, volatilidade_diaria
 
+def adicionar_medias_moveis(dados):
+    dados["Media_Movel_20"] = dados["Close"].rolling(window=20).mean()
+    dados["Media_Movel_50"] = dados["Close"].rolling(window=50).mean()
+
+    return dados
+
 ticker = "VALE3.SA"
 
 dados = buscar_dados(ticker, "1y")
@@ -41,15 +47,17 @@ if dados.empty:
 else:
     primeiro_fechamento, ultimo_fechamento, retorno = calcular_retorno(dados)
     dados = adicionar_retorno_diario(dados)
+    dados = adicionar_medias_moveis(dados)
     media_retorno_diario, volatilidade_diaria = calcular_estatisticas(dados)
 
-    print(f"\nAtivo {ticker}:")
+    print(f"\nAtivo: {ticker}")
     print(f"Primeiro fechamento: R$ {primeiro_fechamento:.2f}")
     print(f"Último fechamento: R$ {ultimo_fechamento:.2f}")
     print(f"Retorno no peródo: {retorno:.2f}%")
     print(f"Média do retorno diário: {media_retorno_diario:.2f}%")
     print(f"Total de registros: {len(dados)}")
     print(f"Volatilidade diária: {volatilidade_diaria:.2f}%")
+  
    
 
 
