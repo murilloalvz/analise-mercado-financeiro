@@ -37,7 +37,21 @@ def adicionar_medias_moveis(dados):
 
     return dados
 
-ticker = "VALE3.SA"
+def plotar_precos(dados, ticker):
+    plt.figure(figsize=(12, 6))
+
+    plt.plot(dados.index, dados["Close"], label="Fechamento")
+    plt.plot(dados.index, dados["Media_Movel_20"], label="Média Móvel 20")
+    plt.plot(dados.index, dados["Media_Movel_50"], label="Média Móvel 50")
+
+    plt.title(f"Histórico de preços -- {ticker}")
+    plt.xlabel("Data")
+    plt.ylabel("Preço (R$)")
+    plt.legend()
+
+    plt.show()
+
+ticker = "PETR4.SA"
 
 dados = buscar_dados(ticker, "1y")
 dados.columns = dados.columns.get_level_values(0)
@@ -57,7 +71,8 @@ else:
     print(f"Média do retorno diário: {media_retorno_diario:.2f}%")
     print(f"Total de registros: {len(dados)}")
     print(f"Volatilidade diária: {volatilidade_diaria:.2f}%")
-  
+
+    plotar_precos(dados, ticker)
    
 
 
