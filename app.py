@@ -30,7 +30,15 @@ else:
     dados = adicionar_medias_moveis(dados)
     media_retorno_diario, volatilidade_diaria = calcular_estatisticas(dados)    
 
-    st.metric(label="Retorno no período", value=f"{retorno:.2f}%")
-    st.metric(label="Média do Retorno Diário", value=f"{media_retorno_diario:.4f}%")
-    st.metric(label="Volatilidade Diária", value=f"{volatilidade_diaria:.4f}%")
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric(label="Retorno no período", value=f"{retorno:.2f}%")
+
+    with col2:
+        st.metric(label="Média do Retorno Diário", value=f"{media_retorno_diario:.4f}%")
+
+    with col3:
+        st.metric(label="Volatilidade Diária", value=f"{volatilidade_diaria:.4f}%")
+
    
