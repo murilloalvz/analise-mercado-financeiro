@@ -8,16 +8,25 @@ from src.analysis import (
 )
 from src.charts import plotar_precos
 
+st.set_page_config(
+    page_title="Análise de Mercado Financeiro",
+    page_icon="📈",
+    layout="wide",
+)
+
 st.title ("Análise de Mercado Financeiro")
 
-ticker = st.text_input(
-    "Digite o ticker do ativo (ex: PETR4.SA):", 
-    "PETR4.SA"
+with st.sidebar:
+    st.subheader("Configurações")
+    
+    ticker = st.text_input(
+        "Digite o ticker do ativo (ex: PETR4.SA):", 
+        "PETR4.SA"
     )
 
-periodo = st.selectbox(
-    "Selecione o período de análise:", 
-    ["1mo", "3mo", "6mo", "1y", "2y", "5y"]
+    periodo = st.selectbox(
+        "Selecione o período de análise:", 
+        ["1mo", "3mo", "6mo", "1y", "2y", "5y"]
     )
 
 dados = buscar_dados(ticker, periodo)
