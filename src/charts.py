@@ -12,4 +12,6 @@ def plotar_precos(dados, ticker):
     plt.ylabel("Preço (R$)")
     plt.legend()
 
-    plt.show()
+    fig = plt.gcf()
+
+    return fig

@@ -6,6 +6,7 @@ from src.analysis import (
     calcular_estatisticas,
     adicionar_medias_moveis,
 )
+from src.charts import plotar_precos
 
 st.title ("Análise de Mercado Financeiro")
 
@@ -28,7 +29,8 @@ else:
     primeiro_fechamento, ultimo_fechamento, retorno = calcular_retorno(dados)
     dados = adicionar_retorno_diario(dados)
     dados = adicionar_medias_moveis(dados)
-    media_retorno_diario, volatilidade_diaria = calcular_estatisticas(dados)    
+    media_retorno_diario, volatilidade_diaria = calcular_estatisticas(dados) 
+    fig = plotar_precos(dados, ticker)   
 
     col1, col2, col3 = st.columns(3)
 
@@ -41,4 +43,7 @@ else:
     with col3:
         st.metric(label="Volatilidade Diária", value=f"{volatilidade_diaria:.4f}%")
 
-   
+    st.divider()
+
+    st.pyplot(fig)
+
