@@ -46,6 +46,9 @@ else:
         st.subheader("Estatísticas")
         st.metric("Total de registros", dados.shape[0])
 
+    st.divider()
+    st.subheader("Resumo do ativo")
+
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -58,6 +61,7 @@ else:
         st.metric(label="Volatilidade Diária", value=f"{volatilidade_diaria:.4f}%")
 
     st.divider()
+    st.subheader("Evolução do preço")
 
     st.pyplot(fig)
 
