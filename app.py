@@ -17,7 +17,7 @@ st.set_page_config(
 st.title ("Análise de Mercado Financeiro")
 
 with st.sidebar:
-    st.subheader("Configurações")
+    st.subheader("Filtros")
     
     ticker = st.text_input(
         "Digite o ticker do ativo (ex: PETR4.SA):", 
@@ -40,6 +40,11 @@ else:
     dados = adicionar_medias_moveis(dados)
     media_retorno_diario, volatilidade_diaria = calcular_estatisticas(dados) 
     fig = plotar_precos(dados, ticker)   
+
+    with st.sidebar:
+        st.divider()
+        st.subheader("Estatísticas")
+        st.metric("Total de registros", dados.shape[0])
 
     col1, col2, col3 = st.columns(3)
 
