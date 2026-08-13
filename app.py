@@ -45,6 +45,8 @@ else:
         st.divider()
         st.subheader("Estatísticas")
         st.metric("Total de registros", dados.shape[0])
+        st.metric("Preço inicial: R$", value=f"R$ {primeiro_fechamento:.2f}")
+        st.metric("Preço atual: R$", value=f"R$ {ultimo_fechamento:.2f}")
         
         if dados.shape[0] < 50:
             st.warning("Pode não haver dados suficientes para visualizar a média móvel de 50 períodos!")
