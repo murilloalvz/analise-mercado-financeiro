@@ -30,11 +30,12 @@ with st.sidebar:
     )
 
 dados = buscar_dados(ticker, periodo)
-dados.columns = dados.columns.get_level_values(0)
 
 if dados.empty: 
     st.error("Nenhum dado foi encontrado para o ticker informado.")
 else:
+    dados.columns = dados.columns.get_level_values(0)
+
     primeiro_fechamento, ultimo_fechamento, retorno = calcular_retorno(dados)
     dados = adicionar_retorno_diario(dados)
     dados = adicionar_medias_moveis(dados)
