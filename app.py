@@ -45,6 +45,9 @@ else:
         st.divider()
         st.subheader("Estatísticas")
         st.metric("Total de registros", dados.shape[0])
+        
+        if dados.shape[0] < 50:
+            st.warning("Pode não haver dados suficientes para visualizar a média móvel de 50 períodos!")
 
     st.divider()
     st.subheader("Resumo do ativo")
