@@ -7,7 +7,10 @@ from src.analysis import (
     adicionar_medias_moveis,
     adicionar_preco_normalizado,
 )
-from src.charts import plotar_precos
+from src.charts import (
+    plotar_precos,
+    plotar_comparacao,
+)
 
 st.set_page_config(
     page_title="Análise de Mercado Financeiro",
@@ -46,11 +49,14 @@ else:
 
     primeiro_fechamento, ultimo_fechamento, retorno = calcular_retorno(dados)
     dados = adicionar_retorno_diario(dados)
+    dados_comparacao = adicionar_retorno_diario(dados_comparacao)
     dados = adicionar_medias_moveis(dados)
     dados = adicionar_preco_normalizado(dados)
     dados_comparacao =  adicionar_preco_normalizado(dados_comparacao)
     media_retorno_diario, volatilidade_diaria = calcular_estatisticas(dados) 
+    media_retorno_diario_comparacao, volatilidade_diaria_comparacao = calcular_estatisticas(dados_comparacao)
     fig = plotar_precos(dados, ticker)   
+    fig_comparacao = plotar_comparacao(dados, dados_comparacao, ticker, ticker_comparacao)
 
     primeiro_fechamento_comparacao, ultimo_fechamento_comparacao, retorno_comparacao = calcular_retorno(dados_comparacao)
 
@@ -79,7 +85,23 @@ else:
         st.metric(label="Volatilidade Diária", value=f"{volatilidade_diaria:.4f}%")
 
     st.divider()
-    st.subheader("Evolução do preço")
-
+    st.subheader(f"Evolução do preço - {ticker}")
     st.pyplot(fig)
+
+    st.divider()
+    st.subheader("Comparação de Ativos")
+
+    col4, col5= st.columns(2)
+
+    with col4:
+        st.subheader(f"{ticker}")
+        st.metric(label="Retorno:", value=f"{retorno:.2f}%")
+        st.metric(label="Volatilidade:", value=f"{volatilidade_diaria:.4f}%")
+
+    with col5:
+        st.subheader(f"{ticker_comparacao}")
+        st.metric(label="Retorno:", value=f"{retorno_comparacao:.2f}%")
+        st.metric(label="Volatilidade:", value=f"{volatilidade_diaria_comparacao:.4f}%")
+        
+    st.pyplot(fig_comparacao)
 
