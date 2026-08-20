@@ -21,3 +21,10 @@ def adicionar_medias_moveis(dados):
     dados["Media_Movel_50"] = dados["Close"].rolling(window=50).mean()
 
     return dados
+
+def adicionar_preco_normalizado(dados):
+    dados["Preco_Normalizado"] = (
+    dados["Close"] / dados["Close"].iloc[0]
+) * 100
+
+    return dados

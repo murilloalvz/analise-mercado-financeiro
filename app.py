@@ -5,6 +5,7 @@ from src.analysis import (
     adicionar_retorno_diario,
     calcular_estatisticas,
     adicionar_medias_moveis,
+    adicionar_preco_normalizado,
 )
 from src.charts import plotar_precos
 
@@ -24,23 +25,34 @@ with st.sidebar:
         "PETR4.SA"
     )
 
+    ticker_comparacao = st.text_input(
+            "Digite o ticker do ativo para comparação (ex: VALE3.SA):", 
+            "VALE3.SA"
+        )
+                       
     periodo = st.selectbox(
         "Selecione o período de análise:", 
         ["1mo", "3mo", "6mo", "1y", "2y", "5y"]
     )
 
 dados = buscar_dados(ticker, periodo)
+dados_comparacao = buscar_dados(ticker_comparacao, periodo)
 
-if dados.empty: 
-    st.error("Nenhum dado foi encontrado para o ticker informado.")
+if dados.empty or dados_comparacao.empty: 
+    st.error("Nenhum dado foi encontrado para um dos ativos informados.")
 else:
     dados.columns = dados.columns.get_level_values(0)
+    dados_comparacao.columns = dados_comparacao.columns.get_level_values(0)
 
     primeiro_fechamento, ultimo_fechamento, retorno = calcular_retorno(dados)
     dados = adicionar_retorno_diario(dados)
     dados = adicionar_medias_moveis(dados)
+    dados = adicionar_preco_normalizado(dados)
+    dados_comparacao =  adicionar_preco_normalizado(dados_comparacao)
     media_retorno_diario, volatilidade_diaria = calcular_estatisticas(dados) 
     fig = plotar_precos(dados, ticker)   
+
+    primeiro_fechamento_comparacao, ultimo_fechamento_comparacao, retorno_comparacao = calcular_retorno(dados_comparacao)
 
     with st.sidebar:
         st.divider()
@@ -59,7 +71,7 @@ else:
 
     with col1:
         st.metric(label="Retorno no período", value=f"{retorno:.2f}%")
-
+        
     with col2:
         st.metric(label="Média do Retorno Diário", value=f"{media_retorno_diario:.4f}%")
 
