@@ -24,12 +24,12 @@ with st.sidebar:
     st.subheader("Filtros")
     
     ticker = st.text_input(
-        "Digite o ticker do ativo (ex: PETR4.SA):", 
+        "Digite o ativo principal(ex: PETR4.SA):", 
         "PETR4.SA"
     )
 
     ticker_comparacao = st.text_input(
-            "Digite o ticker do ativo para comparação (ex: VALE3.SA):", 
+            "Digite o benchmark / ativo de comparação (ex: VALE3.SA):", 
             "VALE3.SA"
         )
                        
