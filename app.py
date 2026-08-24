@@ -6,6 +6,7 @@ from src.analysis import (
     calcular_estatisticas,
     adicionar_medias_moveis,
     adicionar_preco_normalizado,
+    desempenho_relativo,
 )
 from src.charts import (
     plotar_precos,
@@ -24,7 +25,7 @@ with st.sidebar:
     st.subheader("Filtros")
     
     ticker = st.text_input(
-        "Digite o ativo principal(ex: PETR4.SA):", 
+        "Digite o ativo principal (ex: PETR4.SA):", 
         "PETR4.SA"
     )
 
@@ -57,8 +58,15 @@ else:
     media_retorno_diario_comparacao, volatilidade_diaria_comparacao = calcular_estatisticas(dados_comparacao)
     fig = plotar_precos(dados, ticker)   
     fig_comparacao = plotar_comparacao(dados, dados_comparacao, ticker, ticker_comparacao)
-
     primeiro_fechamento_comparacao, ultimo_fechamento_comparacao, retorno_comparacao = calcular_retorno(dados_comparacao)
+    diferenca = desempenho_relativo(retorno, retorno_comparacao)
+
+    if diferenca > 0:
+        aviso=f"{ticker} superou {ticker_comparacao} no período analisado."
+    elif diferenca < 0:
+        aviso=f"{ticker} ficou abaixo de {ticker_comparacao} no período analisado."
+    else:
+        aviso=f"{ticker} teve o mesmo desempenho de {ticker_comparacao} no período analisado."
 
     with st.sidebar:
         st.divider()
@@ -89,9 +97,9 @@ else:
     st.pyplot(fig)
 
     st.divider()
-    st.subheader("Comparação de Ativos")
+    st.subheader("Comparação com benchmark")
 
-    col4, col5= st.columns(2)
+    col4, col5, col6= st.columns(3)
 
     with col4:
         st.subheader(f"{ticker}")
@@ -102,6 +110,11 @@ else:
         st.subheader(f"{ticker_comparacao}")
         st.metric(label="Retorno:", value=f"{retorno_comparacao:.2f}%")
         st.metric(label="Volatilidade:", value=f"{volatilidade_diaria_comparacao:.4f}%")
+
+    with col6:
+        st.subheader(f"Desempenho Relativo")
+        st.metric(label="Pontos Percentuais", value=f"{diferenca:+.2f} p.p.")
+        st.info(aviso)
         
     st.pyplot(fig_comparacao)
 

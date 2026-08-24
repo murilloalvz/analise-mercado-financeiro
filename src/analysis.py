@@ -28,3 +28,8 @@ def adicionar_preco_normalizado(dados):
 ) * 100
 
     return dados
+
+def desempenho_relativo(retorno, retorno_comparacao):
+    diferenca = retorno - retorno_comparacao
+
+    return diferenca
