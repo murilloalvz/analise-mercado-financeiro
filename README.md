@@ -1,105 +1,97 @@
-# Análise de Mercado Financeiro 📈
+# Análise de Mercado Financeiro
 
-Dashboard interativo desenvolvido em Python para consultar dados reais do mercado financeiro, analisar um ativo principal e comparar seu desempenho com um benchmark ou outro ativo.
+Dashboard de **análise de séries temporais financeiras** desenvolvido em Python para consultar dados reais de mercado, avaliar retorno e risco e comparar um ativo com um benchmark.
 
-O projeto reúne coleta de séries históricas, tratamento de dados, indicadores de retorno e risco, médias móveis e visualizações em uma interface construída com Streamlit. Além da análise financeira, o desenvolvimento também pratica organização modular, separação de responsabilidades e versionamento com Git/GitHub.
+O projeto combina aquisição de dados externos, transformação com Pandas, indicadores quantitativos e visualização em uma interface Streamlit.
 
-## Funcionalidades atuais
+## O que este projeto demonstra
+
+- Consumo e tratamento de dados financeiros externos
+- Manipulação de séries temporais com Pandas
+- Cálculo de retorno, volatilidade e médias móveis
+- Normalização de séries para comparação entre ativos
+- Análise relativa contra benchmark
+- Visualização de dados com Matplotlib
+- Arquitetura modular separando dados, análise, gráficos e interface
+
+## Funcionalidades
 
 - Consulta de séries históricas com `yfinance`
-- Interface interativa com Streamlit
-- Seleção dinâmica do ativo principal
-- Seleção de benchmark / ativo de comparação
-- Seleção do período de análise: 1 mês, 3 meses, 6 meses, 1 ano, 2 anos ou 5 anos
-- Validação quando um dos ativos não retorna dados
-- Cálculo do preço inicial e atual
-- Cálculo do retorno percentual no período
-- Cálculo do retorno diário
-- Média do retorno diário
+- Seleção dinâmica de ativo e benchmark
+- Períodos de 1 mês a 5 anos
+- Validação de ativos sem dados
+- Preço inicial e atual
+- Retorno percentual do período
+- Retornos diários e retorno diário médio
 - Volatilidade diária
 - Médias móveis de 20 e 50 períodos
-- Aviso quando o histórico é insuficiente para visualizar adequadamente a média móvel de 50 períodos
-- Gráfico de evolução do preço com MM20 e MM50
-- Normalização dos preços para comparação entre ativos com escalas diferentes
-- Gráfico comparativo de desempenho normalizado
-- Comparação de retorno e volatilidade entre o ativo principal e o benchmark
-- Cálculo do desempenho relativo em pontos percentuais
-- Indicação de quando o ativo principal superou, igualou ou ficou abaixo do benchmark
+- Gráfico de preço com médias móveis
+- Normalização de preços
+- Comparação visual entre ativo e benchmark
+- Comparação de retorno e volatilidade
+- Desempenho relativo em pontos percentuais
 
-## Tecnologias
+## Stack
 
-- Python
-- Pandas
-- yfinance
-- Matplotlib
-- Streamlit
-- Git e GitHub
+**Python • Pandas • yfinance • Matplotlib • Streamlit • Git/GitHub**
 
-## Estrutura do projeto
+## Arquitetura
+
+```text
+Ativo + benchmark + período
+            ↓
+     yfinance / dados
+            ↓
+ Validação e preparação
+            ↓
+ ┌──────────┴──────────┐
+ ↓                     ↓
+Ativo              Benchmark
+ ↓                     ↓
+Retorno / risco    Retorno / risco
+MM20 / MM50        Normalização
+ └──────────┬──────────┘
+            ↓
+   Análise comparativa
+            ↓
+ Dashboard Streamlit
+```
+
+## Estrutura
 
 ```text
 analise-mercado-financeiro/
-├── app.py              # Interface e orquestração da aplicação Streamlit
+├── app.py
 ├── src/
-│   ├── data.py         # Coleta e preparação inicial dos dados financeiros
-│   ├── analysis.py     # Retornos, estatísticas, médias móveis e comparação
-│   └── charts.py       # Gráficos de preço e comparação normalizada
+│   ├── data.py       # coleta e preparação
+│   ├── analysis.py   # indicadores e comparação
+│   └── charts.py     # visualizações
 ├── .gitignore
 ├── requirements.txt
 └── README.md
 ```
 
-## Fluxo da aplicação
-
-```text
-Ativo principal + benchmark + período
-                 ↓
-          Coleta com yfinance
-                 ↓
-       Validação e preparação
-                 ↓
-     ┌───────────┴───────────┐
-     ↓                       ↓
-Ativo principal          Benchmark
-     ↓                       ↓
-Retorno e risco          Retorno e risco
-Médias móveis            Normalização
-Normalização                 ↓
-     └───────────┬───────────┘
-                 ↓
-      Comparação de desempenho
-                 ↓
-       Dashboard no Streamlit
-```
-
 ## Análises disponíveis
 
-### Ativo principal
+### Retorno e risco
 
-O dashboard apresenta o retorno no período, média do retorno diário, volatilidade diária, preço inicial, preço atual e um gráfico com o preço de fechamento acompanhado pelas médias móveis de 20 e 50 períodos.
+O dashboard calcula retorno no período, média do retorno diário e volatilidade diária, além de exibir preços inicial e atual.
 
-### Comparação com benchmark
+### Tendência
 
-O usuário pode informar um segundo ativo para servir como benchmark ou referência. Os preços são normalizados para uma base comum, permitindo comparar a evolução relativa mesmo quando os ativos possuem preços nominais ou moedas diferentes.
+O preço de fechamento é visualizado junto às médias móveis de 20 e 50 períodos. A aplicação informa quando não existe histórico suficiente para interpretar adequadamente a MM50.
 
-A aplicação também compara retorno e volatilidade e calcula o desempenho relativo do ativo principal em relação ao benchmark, apresentado em pontos percentuais.
+### Benchmark
 
-## Como executar
+As séries são normalizadas para uma base comum antes da comparação, evitando que diferenças de preço nominal impeçam a análise relativa. O dashboard compara retorno, volatilidade e desempenho relativo em pontos percentuais.
 
-Clone o repositório:
+## Executando localmente
 
 ```bash
 git clone https://github.com/murilloalvz/analise-mercado-financeiro.git
 cd analise-mercado-financeiro
-```
-
-Crie um ambiente virtual:
-
-```bash
 python -m venv venv
 ```
-
-Ative o ambiente virtual.
 
 Windows:
 
@@ -107,86 +99,44 @@ Windows:
 .\venv\Scripts\activate
 ```
 
-Linux ou macOS:
+Linux/macOS:
 
 ```bash
 source venv/bin/activate
 ```
 
-Instale as dependências:
+Depois:
 
 ```bash
 pip install -r requirements.txt
-```
-
-Execute a aplicação:
-
-```bash
 streamlit run app.py
 ```
 
-Depois, informe o ativo principal, o benchmark e o período desejado pela barra lateral da aplicação.
+Exemplos de ativos: `PETR4.SA`, `VALE3.SA`, `BOVA11.SA`, `AAPL`, `MSFT`, `NVDA` e `SPY`.
 
-### Exemplos de tickers
+## Conceitos aplicados
 
-```text
-PETR4.SA  → Petrobras
-VALE3.SA  → Vale
-BOVA11.SA → ETF do Ibovespa
-AAPL      → Apple
-MSFT      → Microsoft
-NVDA      → NVIDIA
-SPY       → ETF do S&P 500
-```
+O desenvolvimento trabalha DataFrames e Series, indexação, transformação de colunas, `pct_change()`, `mean()`, `std()`, `rolling()`, normalização de séries temporais, validação de dados e separação de responsabilidades.
 
-## Conceitos praticados
+## Status da v1.0
 
-Durante o desenvolvimento, o projeto trabalha conceitos de Python, análise de dados e organização de software, incluindo:
+O núcleo de análise e comparação está funcional. A etapa final está concentrada em revisão de UX, casos extremos, refatoração, screenshots e deploy.
 
-- Funções, parâmetros, argumentos e `return`
-- Módulos próprios e imports
-- DataFrames e Series
-- Indexação com `iloc`
-- Tratamento de MultiIndex
-- Criação e transformação de colunas
-- `pct_change()`, `mean()`, `std()` e `rolling()`
-- Normalização de séries temporais
-- Desempacotamento de valores
-- Controle de fluxo e validação de dados
-- Separação de responsabilidades entre coleta, análise, visualização e interface
-- Visualização de séries temporais com Matplotlib
-- Desenvolvimento de dashboards com Streamlit
-- Versionamento incremental com Git/GitHub
-
-## Roadmap para a v1.0
-
-- [x] Estruturar o repositório
-- [x] Coletar séries históricas com `yfinance`
-- [x] Calcular retorno do período e retornos diários
-- [x] Calcular média e volatilidade diária
-- [x] Adicionar médias móveis de 20 e 50 períodos
-- [x] Criar visualização de preço e médias móveis
-- [x] Separar coleta, análise e visualização em módulos
-- [x] Criar interface interativa com Streamlit
-- [x] Permitir seleção dinâmica de ativo e período
-- [x] Adicionar ativo de comparação / benchmark
-- [x] Normalizar preços para comparação
-- [x] Comparar retorno e volatilidade
-- [x] Calcular desempenho relativo ao benchmark
-- [ ] Realizar revisão final de UX e casos extremos
-- [ ] Revisar e refatorar o código para publicação
-- [ ] Adicionar screenshots e finalizar a documentação
-- [ ] Publicar/deployar a versão v1.0
-
-## Status
-
-🚧 **Em fase final de desenvolvimento da v1.0.**
-
-O núcleo de análise e comparação já está funcional. Os próximos passos estão focados em testes, polimento da interface, revisão técnica e preparação da versão pública do projeto.
+- [x] Coleta de séries históricas
+- [x] Retorno e retornos diários
+- [x] Volatilidade
+- [x] Médias móveis
+- [x] Arquitetura modular
+- [x] Interface Streamlit
+- [x] Benchmark e normalização
+- [x] Comparação de retorno e risco
+- [ ] Revisão final e casos extremos
+- [ ] Screenshots
+- [ ] Deploy v1.0
 
 ## Autor
 
 **Murillo Lourenço**  
-Estudante de Análise e Desenvolvimento de Sistemas na FATEC Sorocaba.
+ADS — FATEC Sorocaba
 
-Interesses: Dados, Inteligência Artificial, Automação e Mercado Financeiro.
+Foco em Dados, Inteligência Artificial, Automação e aplicações financeiras.
