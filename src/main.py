@@ -33,10 +33,3 @@ else:
     print(f"Volatilidade diária: {volatilidade_diaria:.2f}%")
 
     plotar_precos(dados, ticker)
-   
-
-
-    
-
-
-

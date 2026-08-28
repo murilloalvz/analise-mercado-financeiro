@@ -48,24 +48,41 @@ else:
     dados = buscar_dados(ticker, periodo)
     dados_comparacao = buscar_dados(ticker_comparacao, periodo)
 
-    if dados.empty or dados_comparacao.empty: 
-        st.error("Nenhum dado foi encontrado para um dos ativos informados.")
+    if dados.empty and dados_comparacao.empty:
+        st.error("Nenhum dado foi encontrado para os dois ativos informados")
+    elif dados.empty: 
+        st.error(f"Nenhum dado foi encontrado para o {ticker}")
+    elif dados_comparacao.empty:
+        st.error(f"Nenhum dado foi encontrado para o {ticker_comparacao}")
     else:
-        dados.columns = dados.columns.get_level_values(0)
-        dados_comparacao.columns = dados_comparacao.columns.get_level_values(0)
 
         primeiro_fechamento, ultimo_fechamento, retorno = calcular_retorno(dados)
+        _, _, retorno_comparacao = calcular_retorno(dados_comparacao)
+
+
         dados = adicionar_retorno_diario(dados)
         dados_comparacao = adicionar_retorno_diario(dados_comparacao)
+
         dados = adicionar_medias_moveis(dados)
+
         dados = adicionar_preco_normalizado(dados)
-        dados_comparacao =  adicionar_preco_normalizado(dados_comparacao)
-        media_retorno_diario, volatilidade_diaria = calcular_estatisticas(dados) 
-        media_retorno_diario_comparacao, volatilidade_diaria_comparacao = calcular_estatisticas(dados_comparacao)
-        fig = plotar_precos(dados, ticker)   
-        fig_comparacao = plotar_comparacao(dados, dados_comparacao, ticker, ticker_comparacao)
-        primeiro_fechamento_comparacao, ultimo_fechamento_comparacao, retorno_comparacao = calcular_retorno(dados_comparacao)
+        dados_comparacao = adicionar_preco_normalizado(dados_comparacao)
+
+
+        media_retorno_diario, volatilidade_diaria = calcular_estatisticas(dados)
+        _, volatilidade_diaria_comparacao = calcular_estatisticas(dados_comparacao)
+
+
         diferenca = desempenho_relativo(retorno, retorno_comparacao)
+
+
+        fig = plotar_precos(dados, ticker)
+        fig_comparacao = plotar_comparacao(
+            dados,
+            dados_comparacao,
+            ticker,
+            ticker_comparacao
+        )
 
         if diferenca > 0:
             aviso=f"{ticker} superou {ticker_comparacao} no período analisado."
@@ -78,8 +95,8 @@ else:
             st.divider()
             st.subheader("Estatísticas")
             st.metric("Total de registros", dados.shape[0])
-            st.metric("Preço inicial:", value=f"R$ {primeiro_fechamento:.2f}")
-            st.metric("Preço atual:", value=f"R$ {ultimo_fechamento:.2f}", delta=f" {retorno:.2f}%")
+            st.metric("Preço inicial:", value=f"{primeiro_fechamento:.2f}")
+            st.metric("Preço atual:", value=f"{ultimo_fechamento:.2f}", delta=f" {retorno:.2f}%")
             
             if dados.shape[0] < 50:
                 st.warning("Pode não haver dados suficientes para visualizar a média móvel de 50 períodos!")
