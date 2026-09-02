@@ -1,95 +1,82 @@
-# Análise de Mercado Financeiro
+# 📈 Análise de Mercado Financeiro
 
-Dashboard de **análise de séries temporais financeiras** desenvolvido em Python para consultar dados reais de mercado, avaliar retorno e risco e comparar um ativo com um benchmark.
+Dashboard desenvolvido em Python para análise de ativos financeiros e comparação de desempenho com benchmarks utilizando dados reais de mercado.
 
-O projeto combina aquisição de dados externos, transformação com Pandas, indicadores quantitativos e visualização em uma interface Streamlit.
+🔗 **Demo online:** https://market-analysis-dashboard.streamlit.app/
 
-## O que este projeto demonstra
+![Visão geral do dashboard](images/dashboard-overview.png)
 
-- Consumo e tratamento de dados financeiros externos
-- Manipulação de séries temporais com Pandas
-- Cálculo de retorno, volatilidade e médias móveis
-- Normalização de séries para comparação entre ativos
-- Análise relativa contra benchmark
-- Visualização de dados com Matplotlib
-- Arquitetura modular separando dados, análise, gráficos e interface
+## Sobre o projeto
+
+A aplicação permite selecionar um ativo, período de análise e benchmark para acompanhar indicadores de retorno, risco e tendência.
+
+Os dados são obtidos através do Yahoo Finance e processados com Pandas. A interface foi desenvolvida com Streamlit e as visualizações com Matplotlib.
 
 ## Funcionalidades
 
-- Consulta de séries históricas com `yfinance`
-- Seleção dinâmica de ativo e benchmark
-- Períodos de 1 mês a 5 anos
-- Validação de ativos sem dados
-- Preço inicial e atual
-- Retorno percentual do período
-- Retornos diários e retorno diário médio
+- Consulta de dados históricos de ativos
+- Seleção de ativo, benchmark e período
+- Cálculo de retorno no período
+- Retorno diário médio
 - Volatilidade diária
 - Médias móveis de 20 e 50 períodos
-- Gráfico de preço com médias móveis
-- Normalização de preços
-- Comparação visual entre ativo e benchmark
-- Comparação de retorno e volatilidade
+- Comparação de desempenho entre ativo e benchmark
+- Normalização das séries para base 100
 - Desempenho relativo em pontos percentuais
+- Validação de ativos sem dados e entradas inválidas
 
-## Stack
+## Comparação com benchmark
 
-**Python • Pandas • yfinance • Matplotlib • Streamlit • Git/GitHub**
+Além da análise individual do ativo, o dashboard permite comparar retorno e volatilidade com outro ativo utilizado como benchmark.
 
-## Arquitetura
+As séries são normalizadas para uma mesma base, permitindo comparar sua evolução independentemente da diferença entre os preços nominais.
 
-```text
-Ativo + benchmark + período
-            ↓
-     yfinance / dados
-            ↓
- Validação e preparação
-            ↓
- ┌──────────┴──────────┐
- ↓                     ↓
-Ativo              Benchmark
- ↓                     ↓
-Retorno / risco    Retorno / risco
-MM20 / MM50        Normalização
- └──────────┬──────────┘
-            ↓
-   Análise comparativa
-            ↓
- Dashboard Streamlit
-```
+![Comparação com benchmark](images/benchmark-comparison.png)
 
-## Estrutura
+## Tecnologias
+
+- Python
+- Pandas
+- yfinance
+- Matplotlib
+- Streamlit
+- Git e GitHub
+
+## Estrutura do projeto
 
 ```text
 analise-mercado-financeiro/
 ├── app.py
 ├── src/
-│   ├── data.py       # coleta e preparação
-│   ├── analysis.py   # indicadores e comparação
-│   └── charts.py     # visualizações
-├── .gitignore
+│   ├── data.py
+│   ├── analysis.py
+│   └── charts.py
+├── images/
+│   ├── dashboard-overview.png
+│   └── benchmark-comparison.png
 ├── requirements.txt
 └── README.md
 ```
 
-## Análises disponíveis
+A aplicação foi organizada separando responsabilidades:
 
-### Retorno e risco
+- `data.py` — coleta e preparação dos dados
+- `analysis.py` — cálculos e indicadores
+- `charts.py` — visualizações
+- `app.py` — interface e integração dos módulos
 
-O dashboard calcula retorno no período, média do retorno diário e volatilidade diária, além de exibir preços inicial e atual.
+## Como executar
 
-### Tendência
-
-O preço de fechamento é visualizado junto às médias móveis de 20 e 50 períodos. A aplicação informa quando não existe histórico suficiente para interpretar adequadamente a MM50.
-
-### Benchmark
-
-As séries são normalizadas para uma base comum antes da comparação, evitando que diferenças de preço nominal impeçam a análise relativa. O dashboard compara retorno, volatilidade e desempenho relativo em pontos percentuais.
-
-## Executando localmente
+Clone o repositório:
 
 ```bash
 git clone https://github.com/murilloalvz/analise-mercado-financeiro.git
 cd analise-mercado-financeiro
+```
+
+Crie e ative um ambiente virtual:
+
+```bash
 python -m venv venv
 ```
 
@@ -105,38 +92,39 @@ Linux/macOS:
 source venv/bin/activate
 ```
 
-Depois:
+Instale as dependências e execute:
 
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Exemplos de ativos: `PETR4.SA`, `VALE3.SA`, `BOVA11.SA`, `AAPL`, `MSFT`, `NVDA` e `SPY`.
+## Exemplos de ativos
 
-## Conceitos aplicados
+A aplicação pode analisar tickers disponíveis no Yahoo Finance, como:
 
-O desenvolvimento trabalha DataFrames e Series, indexação, transformação de colunas, `pct_change()`, `mean()`, `std()`, `rolling()`, normalização de séries temporais, validação de dados e separação de responsabilidades.
+`PETR4.SA` • `VALE3.SA` • `BOVA11.SA` • `AAPL` • `MSFT` • `NVDA` • `SPY`
 
-## Status da v1.0
+## O que desenvolvi neste projeto
 
-O núcleo de análise e comparação está funcional. A etapa final está concentrada em revisão de UX, casos extremos, refatoração, screenshots e deploy.
+Durante o desenvolvimento, trabalhei principalmente com:
 
-- [x] Coleta de séries históricas
-- [x] Retorno e retornos diários
-- [x] Volatilidade
-- [x] Médias móveis
-- [x] Arquitetura modular
-- [x] Interface Streamlit
-- [x] Benchmark e normalização
-- [x] Comparação de retorno e risco
-- [ ] Revisão final e casos extremos
-- [ ] Screenshots
-- [ ] Deploy v1.0
+- manipulação de DataFrames e séries temporais;
+- consumo e tratamento de dados externos;
+- cálculo de indicadores financeiros;
+- normalização e comparação de séries;
+- visualização de dados;
+- tratamento de entradas e casos extremos;
+- organização modular de uma aplicação Python;
+- versionamento com Git e GitHub.
 
-## Autor
+## Status
+
+**v1.0 concluída e publicada.**
+
+O projeto possui coleta de dados, análise de retorno e risco, médias móveis, comparação com benchmark, interface interativa e deploy público.
+
+---
 
 **Murillo Lourenço**  
-ADS — FATEC Sorocaba
-
-Foco em Dados, Inteligência Artificial, Automação e aplicações financeiras.
+Análise e Desenvolvimento de Sistemas — FATEC Sorocaba
